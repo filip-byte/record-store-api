@@ -9,29 +9,19 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
-@Table(name = "albums")
+@Table(name = "authors")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Album {
+public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    private String name;
 
-    private Integer releaseYear;
-
-    @Enumerated(EnumType.STRING)
-    private Genre genre;
-
-    private Integer priceInPence;
-
-    private Integer stock;
-
-    @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
-    private Author author;
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private Set<Album> albums;
 }

@@ -1,6 +1,5 @@
 package com.filipbyte.record_shop_api.model;
 
-
 public enum Genre {
     ROCK,
     POP,
