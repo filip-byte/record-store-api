@@ -28,14 +28,14 @@ public class AuthorRepositoryTest {
         // Arrange
         Author author = new Author();
         author.setName("Test Author");
-        author.setAlbums(new HashSet<>());  // Initialize the albums set
-        author = authorRepository.save(author);
+        author.setAlbums(new HashSet<>());  // Initialize the albums set using temporary HashSet<>()
+        authorRepository.save(author);
 
         Album album = new Album(1L, "Test Album", 1969, Genre.ROCK, 1000, 10, author);
-        album = albumRepository.save(album);
+        albumRepository.save(album);
 
         author.getAlbums().add(album);
-        authorRepository.save(author);  // Save the updated author with the album set
+        authorRepository.save(author);
 
         // Act
         Author retrievedAuthor = authorRepository.findById(author.getId()).orElseThrow();
