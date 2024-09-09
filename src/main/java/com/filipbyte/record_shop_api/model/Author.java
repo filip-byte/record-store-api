@@ -26,4 +26,9 @@ public class Author {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private Set<Album> albums;
 
+    public Author(Long id, String name) {
+        this.id = id;
+        this.name = name;
+        this.albums = new HashSet<>();
+    }
 }
