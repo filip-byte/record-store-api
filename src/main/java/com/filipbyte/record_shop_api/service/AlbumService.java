@@ -2,20 +2,20 @@ package com.filipbyte.record_shop_api.service;
 
 import com.filipbyte.record_shop_api.model.Album;
 import com.filipbyte.record_shop_api.model.Genre;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AlbumService {
 
-    List<Album> getAllAlbums();
-    Optional<Album> getAlbumById(Long id);
-    Album createAlbum(Album album);
-    Album updateAlbum(Long id, Album albumDetails);
-    void deleteAlbum(Long id);
-    List<Album> findAlbumsByAuthorId(Long authorId);
-    List<Album> findAlbumsByGenre(Genre genre);
-    List<Album> findAlbumsByReleaseYear(Integer year);
-    List<Album> findAlbumsInStock();
+    ResponseEntity<List<Album>> getAllAlbums();
+    ResponseEntity<Album> getAlbumById(Long id);
+    ResponseEntity<Album> createAlbum(Album album);
+    ResponseEntity<Album> updateAlbum(Long id, Album albumDetails);
+    ResponseEntity<Void> deleteAlbum(Long id);
+    ResponseEntity<List<Album>> findAlbumsByAuthorId(Long authorId);
+    ResponseEntity<List<Album>> findAlbumsByGenre(Genre genre);
+    ResponseEntity<List<Album>> findAlbumsByReleaseYear(Integer year);
+    ResponseEntity<List<Album>> findAlbumsInStock();
 
 }
