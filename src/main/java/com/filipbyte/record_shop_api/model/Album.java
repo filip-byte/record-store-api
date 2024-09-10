@@ -1,11 +1,14 @@
 package com.filipbyte.record_shop_api.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.proxy.HibernateProxy;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -33,5 +36,7 @@ public class Album {
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
+    @JsonBackReference
     private Author author;
+
 }
