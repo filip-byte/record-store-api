@@ -13,6 +13,8 @@ public interface AlbumService {
     ResponseEntity<Album> createAlbum(Album album);
     ResponseEntity<Album> updateAlbum(Long id, Album albumDetails);
     ResponseEntity<Void> deleteAlbum(Long id);
+
+    // todo
     ResponseEntity<List<Album>> findAlbumsByAuthorId(Long authorId);
     ResponseEntity<List<Album>> findAlbumsByGenre(Genre genre);
     ResponseEntity<List<Album>> findAlbumsByReleaseYear(Integer year);
