@@ -12,6 +12,7 @@ import java.util.List;
 @RequestMapping("/api/authors")
 public class AuthorController {
 
+    // todo: we need authorService implementation here
     private final AuthorService authorService;
 
     @Autowired
