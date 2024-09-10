@@ -1,5 +1,6 @@
 package com.filipbyte.record_shop_api.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class Author {
     private String name;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<Album> albums;
 
     public Author(Long id, String name) {
@@ -31,4 +33,5 @@ public class Author {
         this.name = name;
         this.albums = new HashSet<>();
     }
+
 }
