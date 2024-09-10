@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class AlbumServiceImpl implements AlbumService {
@@ -23,12 +25,17 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public ResponseEntity<List<Album>> getAllAlbums() {
-        List<Album> albums = (List<Album>) albumRepository.findAll();
+        List<Album> albums = StreamSupport
+                .stream(albumRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
         return new ResponseEntity<>(albums, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Album> getAlbumById(Long id) {
+
+        System.out.println("The request from the controller has been received");
+
         return albumRepository.findById(id)
                 .map(album -> new ResponseEntity<>(album, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -41,15 +48,15 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public ResponseEntity<Album> updateAlbum(Long id, Album albumDetails) {
+    public ResponseEntity<Album> updateAlbum(Long id, Album updatedAlbumDetails) {
         return albumRepository.findById(id)
                 .map(album -> {
-                    album.setTitle(albumDetails.getTitle());
-                    album.setReleaseYear(albumDetails.getReleaseYear());
-                    album.setGenre(albumDetails.getGenre());
-                    album.setPriceInPence(albumDetails.getPriceInPence());
-                    album.setStock(albumDetails.getStock());
-                    album.setAuthor(albumDetails.getAuthor());
+                    album.setTitle(updatedAlbumDetails.getTitle());
+                    album.setReleaseYear(updatedAlbumDetails.getReleaseYear());
+                    album.setGenre(updatedAlbumDetails.getGenre());
+                    album.setPriceInPence(updatedAlbumDetails.getPriceInPence());
+                    album.setStock(updatedAlbumDetails.getStock());
+                    album.setAuthor(updatedAlbumDetails.getAuthor());
                     Album updatedAlbum = albumRepository.save(album);
                     return new ResponseEntity<>(updatedAlbum, HttpStatus.OK);
                 })
