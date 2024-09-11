@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -53,5 +54,10 @@ public class AuthorServiceImpl implements AuthorService {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @Override
+    public Optional<Author> findAuthorByName(String name) {
+        return authorRepository.findAuthorByName(name);
     }
 }
