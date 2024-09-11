@@ -1,15 +1,19 @@
 package com.filipbyte.record_shop_api.service;
 
 import com.filipbyte.record_shop_api.model.Album;
+import com.filipbyte.record_shop_api.model.Author;
 import com.filipbyte.record_shop_api.model.Genre;
 import com.filipbyte.record_shop_api.repository.AlbumRepository;
+import com.filipbyte.record_shop_api.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -19,9 +23,15 @@ public class AlbumServiceImpl implements AlbumService {
     private final AlbumRepository albumRepository;
 
     @Autowired
-    public AlbumServiceImpl(AlbumRepository albumRepository) {
+    public AlbumServiceImpl(AlbumRepository albumRepository,
+                            AuthorRepository authorRepository) {
         this.albumRepository = albumRepository;
+        this.authorRepository = authorRepository;
     }
+
+    @Autowired
+    private AuthorService authorService;
+    private final AuthorRepository authorRepository;
 
     @Override
     public ResponseEntity<List<Album>> getAllAlbums() {
@@ -43,12 +53,20 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public ResponseEntity<Album> createAlbum(Album album) {
-        Album savedAlbum = albumRepository.save(album);
-        return new ResponseEntity<>(savedAlbum, HttpStatus.CREATED);
+        Optional<Author> existingAuthor = authorService.findAuthorByName(album.getAuthor().getName());
+
+        if (existingAuthor.isPresent()) {
+            album.setAuthor(existingAuthor.get());
+        } else {
+            Author newAuthor = authorService.createAuthor(album.getAuthor()).getBody();
+            album.setAuthor(newAuthor);
+        }
+        return new ResponseEntity<>(albumRepository.save(album), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<Album> updateAlbum(Long id, Album updatedAlbumDetails) {
+
         return albumRepository.findById(id)
                 .map(album -> {
                     album.setTitle(updatedAlbumDetails.getTitle());
@@ -75,6 +93,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public ResponseEntity<List<Album>> findAlbumsByAuthorId(Long authorId) {
+
         // todo: write logic for below method:
         // List<Album> albums = albumRepository.findByAuthorId(authorId);
 
@@ -85,6 +104,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public ResponseEntity<List<Album>> findAlbumsByGenre(Genre genre) {
+
         // todo: write logic for below method:
         // List<Album> albums = albumRepository.findByGenre(genre);
 
@@ -95,6 +115,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public ResponseEntity<List<Album>> findAlbumsByReleaseYear(Integer year) {
+
         // todo: write logic for below method:
         // List<Album> albums = albumRepository.findByReleaseYear(year);
 
@@ -105,6 +126,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public ResponseEntity<List<Album>> findAlbumsInStock() {
+
         // todo: write logic for below method:
         // List<Album> albums = albumRepository.findByStockGreaterThan(0);
 
