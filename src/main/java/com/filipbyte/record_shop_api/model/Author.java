@@ -24,9 +24,9 @@ public class Author {
 
     private String name;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author")
     @JsonManagedReference
-    private Set<Album> albums;
+    private Set<Album> albums = new HashSet<>();
 
     public Author(Long id, String name) {
         this.id = id;
@@ -34,4 +34,7 @@ public class Author {
         this.albums = new HashSet<>();
     }
 
+    public Set<Album> getAlbums() {
+        return albums;
+    }
 }
